@@ -53,14 +53,8 @@ d3.json(data).then(function(data) {
 
 // In Demographic Info, Display MetaData From Each Person
 
-    demoInfo = d3.select("sample-metadata");
+    d3.select("#sample-metadata").html(displayMeta(metadata));
 
-
-    // metadata.forEach(function(metadata) {
-    //     metadata.append("panel-body").text(metadata);
-    // })
-
-    console.log(demoInfo)
 // In The Bar Chart, Display Top 10 Bacteria Found
 let x = sample_values.slice(0,10).reverse();
 let y = otu_ids.slice(0,10).map(otuID => `OTU ${otuID}`).reverse();
@@ -86,7 +80,7 @@ let barLayout = [{
 Plotly.newPlot("bar", barGraph, barLayout);
 
 // In Gauge Chart, Display Washing Frequency
-let value = metadata[0].wfreq
+let value = metadata[6];
 
 console.log(value)
 
@@ -150,6 +144,34 @@ let bubbleLayout = [{
 
 Plotly.newPlot("bubble", bubbleChart, bubbleLayout);
 
+// Create Functions:
+
+// To Display MetaData In Panel
+
+    function displayMeta(metadata) {
+        
+        var str = "";
+        
+        Object.entries(metadata).forEach(([key,value]) =>
+            str += `<br>${key}: ${value}<br>`)
+        return str;
+    }
+
+// // To Change Values On Bar Graph
+
+//     function displayBar
+
+// // To Change Values On Bubble Chart
+
+//     function displayBubble
+
+// // To Change The Values Of The Graphs/Charts Based On ID
+
+//     function optionChanged(value) {
+//         let option = d3.select(this);
+//     displayMeta(option,dataSet);
+//     displayBar(option,dataSet);
+//     displayBubble(option,dataSet);
 
 });
 
