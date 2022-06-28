@@ -1,11 +1,23 @@
+//function init() {
+
 // Get Data Set
-const data = "https://2u-data-curriculum-team.s3.amazonaws.com/dataviz-classroom/v1.1/14-Interactive-Web-Visualizations/02-Homework/samples.json";
 
+    const data = "https://2u-data-curriculum-team.s3.amazonaws.com/dataviz-classroom/v1.1/14-Interactive-Web-Visualizations/02-Homework/samples.json";
 
-d3.json(data).then(function(data) {
-    dataSet = data;
+    d3.json(data).then(function(data) {
+        dataSet = data;
 
         console.log(dataSet);
+
+// Define i For Index
+
+    var index = [];
+
+    for (var i in dataSet.names) {
+        index.push(i);
+    }
+
+    console.log(index)
 
 // Get Names
 
@@ -15,7 +27,7 @@ d3.json(data).then(function(data) {
 
 // Get MetaData
 
-    let metadata = Object.values(dataSet.metadata[0]);
+    let metadata = Object.values(dataSet.metadata[i]);
 
         console.log(metadata);
 
@@ -27,183 +39,176 @@ d3.json(data).then(function(data) {
 
 // Get OTU-IDs
 
-    let otu_ids = Object.values(dataSet.samples[0].otu_ids);
+    let otu_ids = Object.values(dataSet.samples[i].otu_ids);
     
         console.log(otu_ids)
 
 // Get Sample Values
 
-    let sample_values = Object.values(dataSet.samples[0].sample_values);
+    let sample_values = Object.values(dataSet.samples[i].sample_values);
 
         console.log(sample_values)
 
 // Get OTU-Labels
 
-    let otu_labels = Object.values(dataSet.samples[0].otu_labels);
+    let otu_labels = Object.values(dataSet.samples[i].otu_labels);
 
         console.log(otu_labels)
 
 // In Dropdown Menu, Display Names
 
-    let menu = d3.select("#selDataset");
+        let menu = d3.select("#selDataset");
 
-    names.forEach(function(names) {
-        menu.append("option").text(names);
-    });
+        names.forEach(function(names) {
+            menu.append("option").text(names);
+        });
 
-// In Demographic Info, Display MetaData From Each Person
+// In Demographic Info, Display MetaData From Each Person (Turn Into Function)
 
-    d3.select("#sample-metadata").html(displayMeta(metadata));
+//        function displayMeta(option, dataSet) {
 
-// In The Bar Chart, Display Top 10 Bacteria Found
-let x = sample_values.slice(0,10).reverse();
-let y = otu_ids.slice(0,10).map(otuID => `OTU ${otuID}`).reverse();
+            d3.select("#sample-metadata").html(displayMeta(metadata));
 
-console.log(x)
-console.log(y)
+//       };
 
-let barGraph = [{
-    x: x,
-    y: y,
-    type: "bar",
-    orientation: "h",
-    marker: {
-        color: 'a262a9'
-      }
-}];
+// In The Bar Chart, Display Top 10 Bacteria Found (Turn Into Function)
 
-let barLayout = [{
-    title: "Top 10 Belly Bacts",
-    margin: { t: 30, l: 150 },
-}];
+//        function displayBar(option, dataSet) {
 
-Plotly.newPlot("bar", barGraph, barLayout);
+            let x = sample_values.slice(0,10).reverse();
+            let y = otu_ids.slice(0,10).map(otuID => `OTU ${otuID}`).reverse();
 
-// In Gauge Chart, Display Washing Frequency
-let value = metadata[6];
+            console.log(x)
+            console.log(y)
 
-console.log(value)
+            let barGraph = [{
+                x: x,
+                y: y,
+                type: "bar",
+                orientation: "h",
+                marker: {
+                    color: 'a262a9'
+                }
+            }];
 
-let gaugeChart = [{
-    domain: { x: [0, 1], y: [0, 1] },
-    value: value,
-    type: "indicator",
-    axis: { range: [null, 7] },
-	title: { text: "Washing Frequency" },
-	mode: "gauge+number",
-    gauge: {
-        axis: { range: [null, 7], tickwidth: 1 },
-        bar: { color: "000000", thickness: 0.1 },
-        steps: [
-            { range: [0, 2], color: "6f4d96" },
-            { range: [2, 4], color: "cd7eaf" },
-            { range: [4, 7], color: "f3cec9"}]
-	}
-}];
+            let barLayout = [{
+                title: "Top 10 Belly Bacts",
+                margin: { t: 30, l: 150 },
+            }];
 
-let gaugeLayout = { 
-    width: 600, 
-    height: 500, 
-    margin: 
-        { t: 0, b: 0 }
-};
+            Plotly.newPlot("bar", barGraph, barLayout);
 
-Plotly.newPlot("gauge", gaugeChart, gaugeLayout);
+//        };
 
-// In Bubble Chart, Display All Of The Bacteria Found In Bellybutton
+// In Gauge Chart, Display Washing Frequency (Turn Into Function)
 
-let a = otu_ids;
-let b = sample_values;
-let text = otu_labels;
-let marker_size = sample_values;
-let marker_color = otu_ids  // .map(otuID => `OTU ${otuID}`);
+//        function displayWashing(option, dataSet) {
 
-console.log(text)
+            let value = metadata[6];
 
-let bubbleChart = [{
-    x: a,
-    y: b,
-    text: text,
-    mode: "markers",
-    marker: {
-        size: marker_size,
-        color: marker_color,
-        colorscale: 'Electric', 
-    }
-}];
+            console.log(value)
 
-let bubbleLayout = [{
-    title: "Top 10 Belly Bacts",
-    xaxis:{
-        title: "OTU-IDs"
-    },
-    showlegend: true,
-    height: 600,
-    width: 1200,
-}];
+            let gaugeChart = [{
+                domain: { x: [0, 1], y: [0, 1] },
+                value: value,
+                type: "indicator",
+                axis: { range: [null, 7] },
+	            title: { text: "Washing Frequency" },
+	            mode: "gauge+number",
+                gauge: {
+                    axis: { range: [null, 7], tickwidth: 1 },
+                    bar: { color: "000000", thickness: 0.1 },
+                    steps: [
+                        { range: [0, 2], color: "6f4d96" },
+                        { range: [2, 4], color: "cd7eaf" },
+                        { range: [4, 7], color: "f3cec9" }
+                    ],
+                }
+            }];
 
-Plotly.newPlot("bubble", bubbleChart, bubbleLayout);
+            let gaugeLayout = { 
+                width: 600, 
+                height: 500, 
+                margin: 
+                    { t: 0, b: 0 }
+            };
+
+            Plotly.newPlot("gauge", gaugeChart, gaugeLayout);
+
+//        };
+
+// In Bubble Chart, Display All Of The Bacteria Found In Bellybutton (Turn Into Function)
+
+//        function displayBubble(option, dataSet) {
+
+            let a = otu_ids;
+            let b = sample_values;
+            let text = otu_labels;
+            let marker_size = sample_values;
+            let marker_color = otu_ids  // .map(otuID => `OTU ${otuID}`);
+
+            console.log(text)
+
+            let bubbleChart = [{
+                x: a,
+                y: b,
+                text: text,
+                mode: "markers",
+                marker: {
+                    size: marker_size,
+                    color: marker_color,
+                    colorscale: 'Electric', 
+                }
+            }];
+
+            let bubbleLayout = [{
+                title: "Top 10 Belly Bacts",
+                xaxis:{
+                    title: "OTU-IDs"
+                },
+                showlegend: true,
+                height: 600,
+                width: 1200,
+            }];
+
+            Plotly.newPlot("bubble", bubbleChart, bubbleLayout);
+
+//        };
 
 // Create Functions:
 
+// To Link Index Of Names To i
+
+        function findName(names) {
+            var nameIndex = []
+        }
+
 // To Display MetaData In Panel
 
-    function displayMeta(metadata) {
+        function displayMeta(metadata) {
         
-        var str = "";
+            var str = "";
         
-        Object.entries(metadata).forEach(([key,value]) =>
-            str += `<br>${key}: ${value}<br>`)
-        return str;
-    }
+            Object.entries(metadata).forEach(([key,value]) =>
+                str += `<br>${key}: ${value}<br>`)
+            return str;
+        };
 
-// // To Change Values On Bar Graph
+// To Change The Values Of The Graphs/Charts Based On ID
 
-//     function displayBar
+        if (metadata[0] = name) {
 
-// // To Change Values On Bubble Chart
+            i = index
 
-//     function displayBubble
+        }
+        
+            optionChanged = 
+            let i = names;
 
-// // To Change The Values Of The Graphs/Charts Based On ID
+        };
 
-//     function optionChanged(value) {
-//         let option = d3.select(this);
-//     displayMeta(option,dataSet);
-//     displayBar(option,dataSet);
-//     displayBubble(option,dataSet);
+    });
 
-});
+//};
 
-
-// function buildCharts(sample) {
-//     d3.json("https://2u-data-curriculum-team.s3.amazonaws.com/dataviz-classroom/v1.1/14-Interactive-Web-Visualizations/02-Homework/samples.json").then((data) => {
-//       let samples = data.samples;
-//       let resultArray = samples.filter(sampleObj => sampleObj.id == sample);
-//       let result = resultArray[0];
-  
-//       let otu_ids = result.otu_ids;
-//       let otu_labels = result.otu_labels;
-//       let sample_values = result.sample_values;
-  
-  
-//       let yticks = otu_ids.slice(0, 10).map(otuID => `OTU ${otuID}`).reverse();
-//       let barData = [
-//         {
-//           y: yticks,
-//           x: sample_values.slice(0, 10).reverse(),
-//           text: otu_labels.slice(0, 10).reverse(),
-//           type: "bar",
-//           orientation: "h",
-//         }
-//       ];
-  
-//       let barLayout = {
-//         title: "Top 10 Bacteria Cultures Found",
-//         margin: { t: 30, l: 150 }
-//       };
-  
-//       Plotly.newPlot("bar", barData, barLayout);
-//     });
-//   }
-// init()  buildCharts(data);
+// init();
