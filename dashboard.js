@@ -196,19 +196,19 @@
 
 // To Change The Values Of The Graphs/Charts Based On ID
 
-        if (metadata[0] = name) {
+    //     if (metadata[0] = name) {
 
-            i = index
+    //         i = index
 
-        }
+    //     }
         
-            optionChanged = 
-            let i = names;
+    //         optionChanged = 
+    //         let i = names;
 
-        };
+    //     };
 
     });
 
-//};
+// };
 
 // init();
