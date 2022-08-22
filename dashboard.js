@@ -66,7 +66,7 @@ function init() {
             menu.append("option").text(names);
         });
 
-// In Demographic Info, Display MetaData From Each Person
+// In Demographic Info, Display MetaData From Each Person By Calling The Function: displayMeta(metadata)
 
             d3.select("#sample-metadata").html(displayMeta(metadata));
 
@@ -178,14 +178,21 @@ displayMeta(metadata)
 
 // Create All Of The Functions For All Of The Charts On The Dashboard:
 
-// Bar Chart Function:
-// 
+// Display Bar Chart Function:
+// This function grabs the sample_values and otu_ids.
 
 function displayBar(sample_values, otu_ids) {
     console.log("displaybar")
 
+// Only wanting the Top 10 Bacterium, slice the sample_values and the otu_ids by their index number (10 is not included, so the list will be from 0-9 *a total of 10*), 
+// and reverse (since the default for slice is to just list the items in order of appearance of the array, and since the otu_ids are listed from most prevalent to 
+// least, we need to add a .reverse to get the chart to list the most common bacterium on TOP of the horizontal bar chart, which would require it to be last in the 
+// order)
+
     let x = sample_values.slice(0,10).reverse();
     let y = otu_ids.slice(0,10).map(otuID => `OTU ${otuID}`).reverse();
+
+// See if the data we're getting is the data we need
 
     console.log(x)
     console.log(y)
@@ -209,9 +216,14 @@ function displayBar(sample_values, otu_ids) {
 
   }
 
+// Display Gauge Chart Function:
+// This function only needs the last item on the list of the metadata
+
 function displayWashing(metadata) {
 
     let value = metadata[6];
+
+// Check to see if the data we're getting is the data we need
 
     console.log(value)
 
@@ -244,7 +256,12 @@ function displayWashing(metadata) {
 
 }
 
+// Display Bubble Chart Function:
+// This function uses otu_ids, sample_values, and otu_labels to construct the graph.
+
 function displayBubble(otu_ids, sample_values, otu_labels) {
+
+// Since the bubble chart displays all of the bacterium found in the belly button, 
 
     let a = otu_ids;
     let b = sample_values;
@@ -279,7 +296,13 @@ function displayBubble(otu_ids, sample_values, otu_labels) {
     Plotly.newPlot("bubble", bubbleChart, bubbleLayout);
 }
 
+// Display Metadata Function:
+// This function (like the Gauge) only needs the metadata to create the display.
+
 function displayMeta(metadata) {
+
+// Create the str variable for each key value pair in the metadata and build the html encoded string (including the breaks) which will be read and populate the
+// the selected patient's information  
         
     var str = "";
 
