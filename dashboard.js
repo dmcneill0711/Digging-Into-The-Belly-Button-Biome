@@ -1,3 +1,6 @@
+// init function is the function called when the webpage/dashboard is initialized and what information will be on display when started. This dashboard is going to 
+// start with patient 940 (or the first patient's number listed on the dataset in numerical order), which happens to be index [0].
+
 function init() {
 
 // Get Data Set
@@ -63,143 +66,48 @@ function init() {
             menu.append("option").text(names);
         });
 
-// In Demographic Info, Display MetaData From Each Person (Turn Into Function)
-
-//        function displayMeta(selectedIndex) {
+// In Demographic Info, Display MetaData From Each Person
 
             d3.select("#sample-metadata").html(displayMeta(metadata));
 
-//       };
+// Call The Function To Display Top 10 Bacteria Found In The Bar Chart
 
-// In The Bar Chart, Display Top 10 Bacteria Found (Turn Into Function)
+displayBar(sample_values, otu_ids)
 
-//        function displayBar(selectedIndex) {
+// Call The Function To Display Washing Frequency Of Each Person In The Gauge 
 
-            let x = sample_values.slice(0,10).reverse();
-            let y = otu_ids.slice(0,10).map(otuID => `OTU ${otuID}`).reverse();
+displayWashing(metadata)
 
-            console.log(x)
-            console.log(y)
+// Call The Function To Display All Of The Bacteria Found In Bellybutton In The Bubble Chart
 
-            let barGraph = [{
-                x: x,
-                y: y,
-                type: "bar",
-                orientation: "h",
-                marker: {
-                    color: 'a262a9'
-                }
-            }];
+displayBubble(otu_ids, sample_values, otu_labels)
 
-            let barLayout = [{
-                title: "Top 10 Belly Bacts",
-                margin: { t: 30, l: 150 },
-            }];
+// Call The Function To Display MetaData In Panel
 
-            Plotly.newPlot("bar", barGraph, barLayout);
-
-//        };
-
-// In Gauge Chart, Display Washing Frequency (Turn Into Function)
-
-//        function displayWashing(selectedIndex) {
-
-            let value = metadata[6];
-
-            console.log(value)
-
-            let gaugeChart = [{
-                domain: { x: [0, 1], y: [0, 1] },
-                value: value,
-                type: "indicator",
-                axis: { range: [null, 7] },
-	            title: { text: "Washing Frequency" },
-	            mode: "gauge+number",
-                gauge: {
-                    axis: { range: [null, 7], tickwidth: 1 },
-                    bar: { color: "000000", thickness: 0.1 },
-                    steps: [
-                        { range: [0, 2], color: "6f4d96" },
-                        { range: [2, 4], color: "cd7eaf" },
-                        { range: [4, 7], color: "f3cec9" }
-                    ],
-                }
-            }];
-
-            let gaugeLayout = { 
-                width: 600, 
-                height: 500, 
-                margin: 
-                    { t: 0, b: 0 }
-            };
-
-            Plotly.newPlot("gauge", gaugeChart, gaugeLayout);
-
-//        };
-
-// In Bubble Chart, Display All Of The Bacteria Found In Bellybutton (Turn Into Function)
-
-//    function displayBubble(selectedIndex) {
-
-            let a = otu_ids;
-            let b = sample_values;
-            let text = otu_labels;
-            let marker_size = sample_values;
-            let marker_color = otu_ids 
-
-            console.log(text)
-
-            let bubbleChart = [{
-                x: a,
-                y: b,
-                text: text,
-                mode: "markers",
-                marker: {
-                    size: marker_size,
-                    color: marker_color,
-                    colorscale: 'Electric', 
-                }
-            }];
-
-            let bubbleLayout = [{
-                title: "Top 10 Belly Bacts",
-                xaxis:{
-                    title: "OTU-IDs"
-                },
-                showlegend: true,
-                height: 600,
-                width: 1200,
-            }];
-
-            Plotly.newPlot("bubble", bubbleChart, bubbleLayout);
-
-// Create Functions:
-
-// To Display MetaData In Panel
-
-        function displayMeta(metadata) {
-        
-            var str = "";
-        
-            Object.entries(metadata).forEach(([key,value]) =>
-                str += `<br>${key}: ${value}<br>`)
-            return str;
-        };
+displayMeta(metadata)
 
     });
 
 }
 
-// This function is called when a dropdown menu item is selected
+// This function is called when a new patient number is selected in the dropdown menu. With 'this.selectedIndex' on the <select>, when a new patient number is
+// selected, the function updatePlots is triggered. This swaps out all the of information pertaining to patient 940 (index [0]), for the newly selected patient's 
+// number and that person's corresponding information. Then, like the function says, it updates all of the plots on the dashboard. 
+
+// This is where the list of indexes created in the init function is assigned to the 'selectedIndex' and is used to map and pull the corresponding information with 
+// the patient to be displayed.
+
 function updatePlots(selectedIndex) {
-  // Use D3 to select the dropdown menu
+
+// Use D3 to select the dropdown menu
+
   let dropdownMenu = d3.select("#selDataset");
-  // Assign the value of the dropdown menu option to a variable
-  let dataset = dropdownMenu.property("option");
+
+// Assign the value of the dropdown menu option to a variable
   
   let index = selectedIndex;
 
-  // Get Data Set
+// Get Data Set
 
   const data = "https://2u-data-curriculum-team.s3.amazonaws.com/dataviz-classroom/v1.1/14-Interactive-Web-Visualizations/02-Homework/samples.json";
 
@@ -244,135 +152,140 @@ function updatePlots(selectedIndex) {
 
       console.log(otu_labels)
 
-// In Demographic Info, Display MetaData From Each Person (Turn Into Function)
+// In Demographic Info, Display MetaData From Each Person
 
-//        function displayMeta(selectedIndex) {
+        d3.select("#sample-metadata").html(displayMeta(metadata));
 
-          d3.select("#sample-metadata").html(displayMeta(metadata));
+// Call The Function To Display Top 10 Bacteria Found In The Bar Chart (Again)
 
-//       };
+displayBar(sample_values, otu_ids)
 
-// In The Bar Chart, Display Top 10 Bacteria Found (Turn Into Function)
+// Call The Function To Display Washing Frequency Of Each Person In The Gauge (Again)
 
-//        function displayBar(selectedIndex) {
+displayWashing(metadata)
 
-          let x = sample_values.slice(0,10).reverse();
-          let y = otu_ids.slice(0,10).map(otuID => `OTU ${otuID}`).reverse();
+// Call The Function To Display All Of The Bacteria Found In Bellybutton In The Bubble Chart (Again)
 
-          console.log(x)
-          console.log(y)
+displayBubble(otu_ids, sample_values, otu_labels)
 
-          let barGraph = [{
-              x: x,
-              y: y,
-              type: "bar",
-              orientation: "h",
-              marker: {
-                  color: 'a262a9'
-              }
-          }];
+// Call The Function To Display MetaData In Panel (Again)
 
-          let barLayout = [{
-              title: "Top 10 Belly Bacts",
-              margin: { t: 30, l: 150 },
-          }];
-
-          Plotly.newPlot("bar", barGraph, barLayout);
-
-//        };
-
-// In Gauge Chart, Display Washing Frequency (Turn Into Function)
-
-//        function displayWashing(selectedIndex) {
-
-          let value = metadata[6];
-
-          console.log(value)
-
-          let gaugeChart = [{
-              domain: { x: [0, 1], y: [0, 1] },
-              value: value,
-              type: "indicator",
-              axis: { range: [null, 7] },
-              title: { text: "Washing Frequency" },
-              mode: "gauge+number",
-              gauge: {
-                  axis: { range: [null, 7], tickwidth: 1 },
-                  bar: { color: "000000", thickness: 0.1 },
-                  steps: [
-                      { range: [0, 2], color: "6f4d96" },
-                      { range: [2, 4], color: "cd7eaf" },
-                      { range: [4, 7], color: "f3cec9" }
-                  ],
-              }
-          }];
-
-          let gaugeLayout = { 
-              width: 600, 
-              height: 500, 
-              margin: 
-                  { t: 0, b: 0 }
-          };
-
-          Plotly.newPlot("gauge", gaugeChart, gaugeLayout);
-
-//        };
-
-// In Bubble Chart, Display All Of The Bacteria Found In Bellybutton (Turn Into Function)
-
-//        function displayBubble(selectedIndex) {
-
-          let a = otu_ids;
-          let b = sample_values;
-          let text = otu_labels;
-          let marker_size = sample_values;
-          let marker_color = otu_ids
-
-          console.log(text)
-
-          let bubbleChart = [{
-              x: a,
-              y: b,
-              text: text,
-              mode: "markers",
-              marker: {
-                  size: marker_size,
-                  color: marker_color,
-                  colorscale: 'Electric', 
-              }
-          }];
-
-          let bubbleLayout = [{
-              title: "Top 10 Belly Bacts",
-              xaxis:{
-                  title: "OTU-IDs"
-              },
-              showlegend: true,
-              height: 600,
-              width: 1200,
-          }];
-
-          Plotly.newPlot("bubble", bubbleChart, bubbleLayout);
-
-//        };
-
-// Create Functions:
-
-// To Display MetaData In Panel
-
-      function displayMeta(metadata) {
-      
-          var str = "";
-      
-          Object.entries(metadata).forEach(([key,value]) =>
-              str += `<br>${key}: ${value}<br>`)
-          return str;
-      };
+displayMeta(metadata)
 
   });
 
 }
 
-// Bubble here
+// Create All Of The Functions For All Of The Charts On The Dashboard:
+
+// Bar Chart Function:
+// 
+
+function displayBar(sample_values, otu_ids) {
+    console.log("displaybar")
+
+    let x = sample_values.slice(0,10).reverse();
+    let y = otu_ids.slice(0,10).map(otuID => `OTU ${otuID}`).reverse();
+
+    console.log(x)
+    console.log(y)
+
+    let barGraph = [{
+        x: x,
+        y: y,
+        type: "bar",
+        orientation: "h",
+        marker: {
+            color: 'a262a9'
+        }
+    }];
+
+    let barLayout = [{
+        title: "Top 10 Belly Bacts",
+        margin: { t: 30, l: 150 },
+    }];
+
+    Plotly.newPlot("bar", barGraph, barLayout);
+
+  }
+
+function displayWashing(metadata) {
+
+    let value = metadata[6];
+
+    console.log(value)
+
+    let gaugeChart = [{
+        domain: { x: [0, 1], y: [0, 1] },
+        value: value,
+        type: "indicator",
+        axis: { range: [null, 7] },
+        title: { text: "Washing Frequency" },
+        mode: "gauge+number",
+        gauge: {
+            axis: { range: [null, 7], tickwidth: 1 },
+            bar: { color: "000000", thickness: 0.1 },
+            steps: [
+                { range: [0, 2], color: "6f4d96" },
+                { range: [2, 4], color: "cd7eaf" },
+                { range: [4, 7], color: "f3cec9" }
+            ],
+        }
+    }];
+
+    let gaugeLayout = { 
+        width: 600, 
+        height: 500, 
+        margin: 
+            { t: 0, b: 0 }
+    };
+
+    Plotly.newPlot("gauge", gaugeChart, gaugeLayout);
+
+}
+
+function displayBubble(otu_ids, sample_values, otu_labels) {
+
+    let a = otu_ids;
+    let b = sample_values;
+    let text = otu_labels;
+    let marker_size = sample_values;
+    let marker_color = otu_ids 
+
+    console.log(text)
+
+    let bubbleChart = [{
+        x: a,
+        y: b,
+        text: text,
+        mode: "markers",
+        marker: {
+            size: marker_size,
+            color: marker_color,
+            colorscale: 'Electric', 
+        }
+    }];
+
+    let bubbleLayout = [{
+        title: "Top 10 Belly Bacts",
+        xaxis:{
+            title: "OTU-IDs"
+        },
+        showlegend: true,
+        height: 600,
+        width: 1200,
+    }];
+
+    Plotly.newPlot("bubble", bubbleChart, bubbleLayout);
+}
+
+function displayMeta(metadata) {
+        
+    var str = "";
+
+    Object.entries(metadata).forEach(([key,value]) =>
+        str += `<br>${key}: ${value}<br>`)
+    return str;
+}
 
 init();
