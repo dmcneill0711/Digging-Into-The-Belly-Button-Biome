@@ -37,7 +37,9 @@ https://dmcneill0711.github.io/Digging-Into-The-Belly-Button-Biome/
 <br>
 <hr>
 <h3><i>Screen Shots:</i></h3>
+
 ![dashboard](https://user-images.githubusercontent.com/100710958/188471560-8206ff00-bf31-420a-b444-d21daf0dcc41.png)
+
 ![dash_bubble](https://user-images.githubusercontent.com/100710958/188471601-08bedded-1ed2-4dbd-a6b7-a644bb389aaa.png)
 
 
