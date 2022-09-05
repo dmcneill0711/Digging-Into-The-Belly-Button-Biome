@@ -34,3 +34,10 @@ https://dmcneill0711.github.io/Digging-Into-The-Belly-Button-Biome/
 </ul>
 <p>4) The second to last function created was the updatePlot, which is a for loop that runs through the indexes, and when that index number matches the one associated with the patient number, it will select all of the following information and update all of the charts with the relevant information.</p>
 <p>5) The final function used was the init() function, which determines what to display when the dashboard is first started. </p>
+<br>
+<hr>
+<h3><i>Screen Shots:</i></h3>
+![dashboard](https://user-images.githubusercontent.com/100710958/188471560-8206ff00-bf31-420a-b444-d21daf0dcc41.png)
+![dash_bubble](https://user-images.githubusercontent.com/100710958/188471601-08bedded-1ed2-4dbd-a6b7-a644bb389aaa.png)
+
+
